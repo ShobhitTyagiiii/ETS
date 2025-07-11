@@ -2,22 +2,22 @@ from pathlib import Path
 import os
 import dj_database_url
 
-# Base directory
+# --- Base directory ---
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Secret key: use env var in production
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-default-key')
+# --- Secret Key ---
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d*#8-=^lt1n3&kw01s0657g0z1+2pgy8@(np6-!ad#8@8h(mgz')
 
-# Debug mode: set to False in production
+# --- Debug ---
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# Allowed hosts
-ALLOWED_HOSTS = ['ets-production-c3dc.up.railway.app', 'localhost', '127.0.0.1']
+# --- Allowed Hosts ---
+ALLOWED_HOSTS = ['ets-production-c3dc.up.railway.app']
 
-# Custom user model
+# --- Custom User Model ---
 AUTH_USER_MODEL = 'Tracker.CustomUser'
 
-# Installed apps
+# --- Installed Apps ---
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'Tracker',
 ]
 
-# Middleware
+# --- Middleware ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -39,10 +39,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Root URL
+# --- URL configuration ---
 ROOT_URLCONF = 'ExpenseTracker.urls'
 
-# Templates
+# --- Templates ---
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -59,15 +59,15 @@ TEMPLATES = [
     },
 ]
 
-# WSGI
+# --- WSGI Application ---
 WSGI_APPLICATION = 'ExpenseTracker.wsgi.application'
 
-# Database config
+# --- Database ---
 DATABASES = {
     'default': dj_database_url.config(default='sqlite:///db.sqlite3', conn_max_age=600)
 }
 
-# Password validation
+# --- Password Validation ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -75,35 +75,38 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization
+# --- Internationalization ---
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files
+# --- Static Files ---
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Media files
+# --- Media Files ---
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Login redirect
+# --- Auth Redirects ---
 LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Session
-SESSION_COOKIE_SECURE = True
+# --- Sessions ---
 SESSION_COOKIE_HTTPONLY = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 86400  # 1 day
 
-# CSRF + HTTPS security
+# ✅ Important for Railway Deployment ---
+# Railway handles HTTPS at the proxy level
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False  # avoid redirect loop on Railway
+
+# ✅ CSRF Trusted Origins ---
 CSRF_TRUSTED_ORIGINS = ['https://ets-production-c3dc.up.railway.app']
 
-# Default auto field
+# --- Default Auto Field ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
