@@ -9,8 +9,10 @@ SECRET_KEY = 'django-insecure-d*#8-=^lt1n3&kw01s0657g0z1+2pgy8@(np6-!ad#8@8h(mgz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# Allow all hosts for offline development
+ALLOWED_HOSTS = ['*']
 
+AUTH_USER_MODEL = 'Tracker.CustomUser'
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -52,7 +54,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ExpenseTracker.wsgi.application'
 
-# Database (SQLite for development)
+# Database (SQLite for offline development)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,7 +72,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'UTC'  # Changed to UTC for better offline compatibility
 USE_I18N = True
 USE_TZ = True
 
@@ -88,14 +90,23 @@ LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
-# Session Settings (Session-based Auth)
+# Session Settings (Session-based Auth) - Optimized for offline use
 SESSION_COOKIE_SECURE = False  # Set True in production (HTTPS)
 SESSION_COOKIE_HTTPONLY = True
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 1800  # 30 minutes session expiry
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # Changed to False for offline convenience
+SESSION_COOKIE_AGE = 86400  # 24 hours session expiry for offline use
 
 # CSRF Protection
 CSRF_COOKIE_SECURE = False  # Set True in production (HTTPS)
 
-# HTTPS settings (Disable while developing locally)
+# HTTPS settings (Disable for offline development)
 SECURE_SSL_REDIRECT = False  # Set True in production
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Offline-specific settings
+USE_X_FORWARDED_HOST = False
+USE_X_FORWARDED_PORT = False
+

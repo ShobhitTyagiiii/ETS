@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.login_register_view, name='login'),
@@ -17,4 +19,4 @@ urlpatterns = [
     path('api/test/', views.test_api, name='test_api'),
     path('api/chart-data/', views.chart_data_api, name='chart_data_api'),
     path('api/reports-chart-data/', views.reports_chart_data_api, name='reports_chart_data_api'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

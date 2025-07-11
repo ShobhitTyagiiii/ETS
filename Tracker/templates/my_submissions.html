@@ -5,10 +5,9 @@
   <meta charset="UTF-8" />
   <title>My Submissions | Team Expense Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet" />
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
-
   <!-- Navbar -->
   <nav class="bg-white shadow-md p-4 px-6 flex justify-between items-center text-black">
     <div class="flex items-center gap-2">
@@ -71,6 +70,7 @@
               <th class="py-3 px-4 text-left">Amount</th>
               <th class="py-3 px-4 text-left">Category</th>
               <th class="py-3 px-4 text-left">Date</th>
+              <th class="py-3 px-4 text-left">Invoice</th>
               <th class="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
@@ -81,6 +81,13 @@
               <td class="py-3 px-4">₹{{ exp.amount }}</td>
               <td class="py-3 px-4">{{ exp.category }}</td>
               <td class="py-3 px-4">{{ exp.date }}</td>
+              <td class="py-3 px-4">
+                {% if exp.invoice %}
+                  <a href="{{ exp.invoice.url }}" target="_blank" class="text-indigo-600 hover:underline text-sm" download>Download</a>
+                {% else %}
+                  <span class="text-gray-400 text-sm">No File</span>
+                {% endif %}
+              </td>
               <td class="py-3 px-4 space-x-2">
                 <a href="{% url 'edit_expense' exp.id %}" class="text-blue-600 hover:underline text-sm">Edit</a>
                 <form method="POST" action="{% url 'delete_expense' exp.id %}" class="inline" onsubmit="return confirm('Are you sure?');">
