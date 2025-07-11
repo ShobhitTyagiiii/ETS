@@ -8,9 +8,6 @@
 
   <!-- ✅ Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- ✅ Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
 
@@ -89,107 +86,7 @@
           Generate Report
         </button>
       </form>
-
-      <!-- Side-by-side Charts -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Pie Chart -->
-        <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
-          <div class="w-[90%] md:w-[85%]">
-            <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Expenses by Category (Pie)</h3>
-            <canvas id="categoryChart" height="250"></canvas>
-          </div>
-        </div>
-
-        <!-- Bar Chart -->
-        <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
-          <div class="w-[90%] md:w-[85%]">
-            <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Expenses by Month (Bar)</h3>
-            <canvas id="monthlyChart" height="250"></canvas>
-          </div>
-        </div>
-      </div>
     </main>
   </div>
-
-  <!-- ✅ Chart Rendering Script -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      const range = document.getElementById("rangeSelect").value;
-
-      fetch(`/api/reports-chart-data/?range=${range}`)
-        .then(res => res.json())
-        .then(data => {
-          // Pie Chart
-          const pieCtx = document.getElementById("categoryChart").getContext("2d");
-          new Chart(pieCtx, {
-            type: "pie",
-            data: {
-              labels: data.category_labels,
-              datasets: [{
-                label: "Expenses",
-                data: data.category_totals,
-                backgroundColor: [
-                  "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#6366F1",
-                  "#EC4899", "#3B82F6", "#8B5CF6", "#14B8A6", "#F97316"
-                ]
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                  labels: { color: "#1f2937" }
-                },
-                title: {
-                  display: true,
-                  text: "Expenses by Category",
-                  color: "#1f2937",
-                  font: { size: 16 }
-                }
-              }
-            }
-          });
-
-          // Bar Chart
-          const barCtx = document.getElementById("monthlyChart").getContext("2d");
-          new Chart(barCtx, {
-            type: "bar",
-            data: {
-              labels: data.month_labels,
-              datasets: [{
-                label: "₹ Spent",
-                data: data.monthly_totals,
-                backgroundColor: "#6366f1"
-              }]
-            },
-            options: {
-              responsive: true,
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  ticks: { color: "#1f2937" }
-                },
-                x: {
-                  ticks: { color: "#1f2937" }
-                }
-              },
-              plugins: {
-                legend: {
-                  labels: { color: "#1f2937" }
-                },
-                title: {
-                  display: true,
-                  text: "Monthly Expense Distribution",
-                  color: "#1f2937",
-                  font: { size: 16 }
-                }
-              }
-            }
-          });
-        })
-        .catch(err => console.error("Chart load error:", err));
-    });
-  </script>
 </body>
 </html>
