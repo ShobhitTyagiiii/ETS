@@ -107,25 +107,7 @@ Tracker/
 - Loading and error states
 - Print media queries
 
-## Troubleshooting
 
-### Charts Not Loading
-1. Check browser console for JavaScript errors
-2. Verify API endpoints are accessible
-3. Ensure user is logged in
-4. Check network connectivity
-
-### No Data Displayed
-1. Verify expenses exist in database
-2. Check API response in browser dev tools
-3. Ensure proper date filtering
-4. Verify user permissions
-
-### Charts Not Updating
-1. Check auto-refresh interval (30 seconds)
-2. Verify page visibility detection
-3. Check for JavaScript errors
-4. Ensure API endpoints are working
 
 ## Future Enhancements
 
