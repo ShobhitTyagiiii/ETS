@@ -1,11 +1,13 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Submit Expense | Team Expense Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet" />
+
+  <!-- ✅ Tailwind CSS via CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+
   <style>
     .animate-fade-in-down {
       animation: fadeInDown 0.4s ease-out;
@@ -33,7 +35,7 @@
       document.getElementById('toast')?.remove();
     }, 3000);
   </script>
-{% endif %}
+  {% endif %}
 
   <!-- Navbar -->
   <nav class="bg-white shadow-md p-4 px-6 flex justify-between items-center text-black">
@@ -45,7 +47,7 @@
       <span class="text-xl font-bold tracking-wide">Team Expense Tracker</span>
     </div>
     <div class="flex items-center space-x-6">
-      <span class="font-medium">👤 {{ request.user.username }}</span>
+      <span class="font-medium">👤 {{ request.user.first_name }}</span>
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="bg-white text-indigo-700 font-semibold px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
@@ -60,7 +62,7 @@
     <aside class="w-64 min-h-screen bg-gray-900 text-white shadow-lg p-6 hidden md:block">
       <div class="mb-10">
         <h2 class="text-2xl font-bold mb-1">Welcome</h2>
-        <p class="text-sm text-gray-400">{{ request.user.username }}</p>
+        <p class="text-sm text-gray-400">{{ request.user.first_name }}</p>
       </div>
       <nav class="space-y-4 text-sm">
         <a href="{% url 'dashboard' %}" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition">
@@ -141,6 +143,8 @@
     </main>
   </div>
 
-  <script src="{% static 'js/feather.min.js' %}"></script>
+  <!-- Optional Feather Icons (online via CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script>feather.replace()</script>
 </body>
 </html>

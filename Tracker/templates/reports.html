@@ -5,9 +5,12 @@
   <meta charset="UTF-8" />
   <title>Reports | Team Expense Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet" />
-  <script src="{% static 'js/chart.min.js' %}"></script>
-  <link rel="stylesheet" href="{% static 'css/chart-fixes.css' %}">
+
+  <!-- ✅ Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ✅ Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-100 min-h-screen font-sans">
 
@@ -96,7 +99,50 @@
     </main>
   </div>
 
-  <!-- Charts JS -->
-  <script src="{% static 'js/charts.js' %}"></script>
+  <!-- ✅ Chart Rendering Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const range = document.getElementById("rangeSelect").value;
+
+      fetch(`/api/reports-chart-data/?range=${range}`)
+        .then(res => res.json())
+        .then(data => {
+          const ctx = document.getElementById("categoryChart").getContext("2d");
+          new Chart(ctx, {
+            type: "pie",
+            data: {
+              labels: data.category_labels,
+              datasets: [{
+                label: "Expenses",
+                data: data.category_totals,
+                backgroundColor: [
+                  "#4F46E5", "#10B981", "#F59E0B", "#EF4444", "#6366F1",
+                  "#EC4899", "#3B82F6", "#8B5CF6", "#14B8A6", "#F97316"
+                ]
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: {
+                    color: "#1f2937"
+                  }
+                },
+                title: {
+                  display: true,
+                  text: "Expenses by Category",
+                  color: "#1f2937",
+                  font: { size: 16 }
+                }
+              }
+            }
+          });
+        })
+        .catch(err => console.error("Chart load error:", err));
+    });
+  </script>
+
 </body>
 </html>
