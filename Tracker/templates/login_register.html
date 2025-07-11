@@ -5,7 +5,19 @@
   <meta charset="UTF-8" />
   <title>Auth | Team Expense Tracker</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="{% static 'css/tailwind.min.css' %}" rel="stylesheet" />
+
+  <!-- ✅ Tailwind CSS CDN (latest) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Optional: Tailwind config (if you want to extend colors, etc.) -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+
   <script>
     function toggleForm() {
       const loginForm = document.getElementById("loginForm");
