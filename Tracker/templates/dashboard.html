@@ -102,8 +102,44 @@
     </main>
   </div>
 
-  <!-- ✅ Include your charts.js which uses fetch from Django API -->
-  <script src="/static/js/charts.js"></script>
+  <!-- ✅ Inline Chart.js Script -->
+  <script>
+    fetch('/api/chart-data/')
+      .then(response => response.json())
+      .then(data => {
+        const barCtx = document.getElementById('barChart').getContext('2d');
+        new Chart(barCtx, {
+          type: 'bar',
+          data: {
+            labels: data.month_labels,
+            datasets: [{
+              label: '₹ Spent',
+              data: data.monthly_totals,
+              backgroundColor: '#6366f1'
+            }]
+          },
+          options: {
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
 
+        const pieCtx = document.getElementById('pieChart').getContext('2d');
+        new Chart(pieCtx, {
+          type: 'pie',
+          data: {
+            labels: data.category_labels,
+            datasets: [{
+              data: data.category_totals,
+              backgroundColor: ['#f87171', '#60a5fa', '#34d399', '#fbbf24', '#a78bfa', '#f472b6']
+            }]
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Chart Data Error:', error);
+      });
+  </script>
 </body>
 </html>
