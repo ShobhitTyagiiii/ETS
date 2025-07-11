@@ -12,7 +12,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-d*#8-=^lt1n3&kw01s0657g0z1
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # Hosts
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = ['ets-production-c3dc.up.railway.app']
 
 # Custom user model
 AUTH_USER_MODEL = 'Tracker.CustomUser'
