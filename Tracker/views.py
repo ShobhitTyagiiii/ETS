@@ -24,6 +24,9 @@ User = get_user_model()
 
 
 # --- ADD EXPENSE ---
+
+from django.utils.timezone import now
+
 @login_required
 def add_expense_view(request):
     if request.method == 'POST':
@@ -33,6 +36,9 @@ def add_expense_view(request):
         description = request.POST.get('description', '')
         date = request.POST.get('date')
         invoice = request.FILES.get('invoice')
+
+        if not date:
+            date = now().date()
 
         Expense.objects.create(
             user=request.user,
@@ -47,7 +53,10 @@ def add_expense_view(request):
         return redirect('/add-expense?submitted=true')
 
     submitted = request.GET.get('submitted') == 'true'
-    return render(request, 'add_expense.html', {'submitted': submitted})
+    return render(request, 'add_expense.html', {
+        'submitted': submitted,
+        'today': now().date().isoformat()
+    })
 
 
 # --- EDIT EXPENSE ---
