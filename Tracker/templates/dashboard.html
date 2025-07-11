@@ -85,22 +85,24 @@
         </a>
       </div>
 
-      <!-- Charts Side by Side -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Bar Chart -->
-        <div class="bg-white p-6 rounded-xl shadow">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">Monthly Expenses (Bar Chart)</h3>
-          <canvas id="barChart" width="400" height="350"></canvas>
-        </div>
-
-        <!-- Pie Chart -->
-        <div class="bg-white p-6 rounded-xl shadow">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">Expenses by Category (Pie Chart)</h3>
-          <canvas id="pieChart" width="400" height="350"></canvas>
-        </div>
-      </div>
-    </main>
+    <!-- Charts Side by Side with reduced size -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- Bar Chart -->
+  <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
+    <div class="w-[90%] sm:w-[90%] md:w-[85%]">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Monthly Expenses (Bar Chart)</h3>
+      <canvas id="barChart" height="280"></canvas>
+    </div>
   </div>
+
+  <!-- Pie Chart -->
+  <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
+    <div class="w-[90%] sm:w-[90%] md:w-[85%]">
+      <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Expenses by Category (Pie Chart)</h3>
+      <canvas id="pieChart" height="280"></canvas>
+    </div>
+  </div>
+</div>
 
   <!-- ✅ Inline Chart.js Script -->
   <script>

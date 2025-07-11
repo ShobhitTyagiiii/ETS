@@ -24,7 +24,7 @@
       <span class="text-xl font-bold tracking-wide">Team Expense Tracker</span>
     </div>
     <div class="flex items-center space-x-6">
-      <span class="font-medium">👤 {{ request.user.username }}</span>
+      <span class="font-medium">👤 {{ request.user.first_name }}</span>
       <form method="post" action="{% url 'logout' %}">
         {% csrf_token %}
         <button type="submit" class="bg-white text-indigo-700 font-semibold px-4 py-2 rounded-lg hover:bg-indigo-100 transition">
@@ -39,7 +39,7 @@
     <aside class="w-64 min-h-screen bg-gray-900 text-white shadow-lg p-6 hidden md:block">
       <div class="mb-10">
         <h2 class="text-2xl font-bold mb-1">Welcome</h2>
-        <p class="text-sm text-gray-400">{{ request.user.username }}</p>
+        <p class="text-sm text-gray-400">{{ request.user.first_name }}</p>
       </div>
       <nav class="space-y-4 text-sm">
         <a href="{% url 'dashboard' %}" class="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-white hover:bg-opacity-20 transition">
@@ -90,10 +90,22 @@
         </button>
       </form>
 
-      <div class="mt-8">
-        <h3 class="text-xl font-semibold text-gray-800 mb-3">Expenses by Category</h3>
-        <div class="chart-wrapper reports-chart">
-          <canvas id="categoryChart" width="400" height="400"></canvas>
+      <!-- Side-by-side Charts -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Pie Chart -->
+        <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
+          <div class="w-[90%] md:w-[85%]">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Expenses by Category (Pie)</h3>
+            <canvas id="categoryChart" height="250"></canvas>
+          </div>
+        </div>
+
+        <!-- Bar Chart -->
+        <div class="bg-white p-4 rounded-xl shadow flex justify-center items-center">
+          <div class="w-[90%] md:w-[85%]">
+            <h3 class="text-lg font-semibold text-gray-800 mb-2 text-center">Expenses by Month (Bar)</h3>
+            <canvas id="monthlyChart" height="250"></canvas>
+          </div>
         </div>
       </div>
     </main>
@@ -107,8 +119,9 @@
       fetch(`/api/reports-chart-data/?range=${range}`)
         .then(res => res.json())
         .then(data => {
-          const ctx = document.getElementById("categoryChart").getContext("2d");
-          new Chart(ctx, {
+          // Pie Chart
+          const pieCtx = document.getElementById("categoryChart").getContext("2d");
+          new Chart(pieCtx, {
             type: "pie",
             data: {
               labels: data.category_labels,
@@ -126,9 +139,7 @@
               plugins: {
                 legend: {
                   position: "bottom",
-                  labels: {
-                    color: "#1f2937"
-                  }
+                  labels: { color: "#1f2937" }
                 },
                 title: {
                   display: true,
@@ -139,10 +150,46 @@
               }
             }
           });
+
+          // Bar Chart
+          const barCtx = document.getElementById("monthlyChart").getContext("2d");
+          new Chart(barCtx, {
+            type: "bar",
+            data: {
+              labels: data.month_labels,
+              datasets: [{
+                label: "₹ Spent",
+                data: data.monthly_totals,
+                backgroundColor: "#6366f1"
+              }]
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: { color: "#1f2937" }
+                },
+                x: {
+                  ticks: { color: "#1f2937" }
+                }
+              },
+              plugins: {
+                legend: {
+                  labels: { color: "#1f2937" }
+                },
+                title: {
+                  display: true,
+                  text: "Monthly Expense Distribution",
+                  color: "#1f2937",
+                  font: { size: 16 }
+                }
+              }
+            }
+          });
         })
         .catch(err => console.error("Chart load error:", err));
     });
   </script>
-
 </body>
 </html>
